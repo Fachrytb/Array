@@ -1,14 +1,927 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuis Array 1D & 2D - 15 Soal | SMK RPL</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .warning-note {
+            background: #ffc107;
+            color: #856404;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Score Board */
+        .score-board {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .score-info {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-label {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .score-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .reset-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: transform 0.2s;
+        }
+
+        .reset-btn:hover {
+            transform: scale(1.05);
+            background: #c82333;
+        }
+
+        /* Main Content */
+        .quiz-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Card Style */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        /* Array Display */
+        .array-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .array-1d {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .array-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 80px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .array-2d {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .array-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .array-cell {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 70px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .student-data {
+            margin-top: 20px;
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .kelas-item {
+            margin-top: 10px;
+            padding: 8px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .kelas-label {
+            font-weight: bold;
+            background: #667eea;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .student-list {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .student-name {
+            background: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            color: #333;
+            font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .index-info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #004085;
+        }
+
+        /* Question */
+        .question-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .question-text {
+            font-size: 1em;
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            border-color: #764ba2;
+        }
+
+        .option.selected {
+            background: #cce5ff;
+            border-color: #004085;
+        }
+
+        .option.selected.disabled {
+            background: #e7e7e7;
+            border-color: #aaa;
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option input {
+            margin-right: 10px;
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .option.disabled input {
+            cursor: not-allowed;
+        }
+
+        .option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.95em;
+        }
+
+        .option.disabled label {
+            cursor: not-allowed;
+        }
+
+        /* Buttons */
+        .submit-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: transform 0.2s;
+            margin-right: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #218838, #1aa179);
+        }
+
+        .submit-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feedback.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            display: block;
+        }
+
+        .feedback.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            display: block;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .status-unanswered {
+            background: #ffc107;
+            color: #856404;
+        }
+
+        .status-answered {
+            background: #28a745;
+            color: white;
+        }
+
+        /* Scroll Area untuk Banyak Soal */
+        .quiz-scroll {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .quiz-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .quiz-scroll::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .quiz-scroll::-webkit-scrollbar-thumb {
+            background: #764ba2;
+            border-radius: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .quiz-layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .score-info {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .array-item, .array-cell {
+                padding: 8px;
+                font-size: 0.9em;
+                min-width: 50px;
+            }
+            
+            .question-text {
+                font-size: 0.9em;
+            }
+            
+            .kelas-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .option label {
+                font-size: 0.85em;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  
-</body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Kuis Array 1 Dimensi & 2 Dimensi</h1>
+            <p>Total 15 Soal | Pilih jawaban, lalu klik <strong>Submit Jawaban</strong> untuk mengetahui hasilnya!</p>
+            <div class="warning-note">
+                ⚠️ <strong>Perhatian!</strong> Tidak ada label indeks yang ditampilkan. Hitung sendiri posisi baris dan kolom!
+            </div>
+        </div>
 
+        <div class="score-board">
+            <div class="score-info">
+                <div class="score-item">
+                    <div class="score-label">✅ Jawaban Benar</div>
+                    <div class="score-value" id="correctCount">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">❌ Jawaban Salah</div>
+                    <div class="score-value" id="wrongCount">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">⏳ Belum Dijawab</div>
+                    <div class="score-value" id="unansweredCount">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">📊 Total Soal</div>
+                    <div class="score-value" id="totalCount">0</div>
+                </div>
+            </div>
+            <button class="reset-btn" onclick="resetQuiz()">🔄 Reset Semua Jawaban</button>
+        </div>
+
+        <div class="quiz-layout">
+            <!-- Bagian Array 1 Dimensi -->
+            <div class="card">
+                <h2>📊 Array 1 Dimensi <span style="font-size:0.8em; color:#666;">(7 Soal)</span></h2>
+                <div class="array-container">
+                    <div class="array-1d" id="array1DDisplay"></div>
+                    <div class="index-info">
+                        💡 <strong>Ingat!</strong> Indeks array dimulai dari <strong>0</strong><br>
+                        Contoh: <code>namaArray[indeks]</code>
+                    </div>
+                </div>
+                <div id="quiz1D" class="quiz-scroll"></div>
+            </div>
+
+            <!-- Bagian Array 2 Dimensi -->
+            <div class="card">
+                <h2>🔢 Array 2 Dimensi <span style="font-size:0.8em; color:#666;">(8 Soal)</span></h2>
+                <div class="array-container">
+                    <div id="array2DDisplay"></div>
+                    <div class="index-info">
+                        💡 <strong>Ingat!</strong> Array 2D = baris dan kolom, dimulai dari <strong>0</strong><br>
+                        Contoh: <code>namaArray[baris][kolom]</code><br>
+                        🎯 <strong>Tips:</strong> Baris pertama = 0, kolom pertama = 0
+                    </div>
+                </div>
+                <div id="quiz2D" class="quiz-scroll"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ DATA ARRAY ============
+        // Array 1 Dimensi - Buah
+        const fruits = ["Apel", "Pisang", "Jeruk", "Mangga", "Anggur", "Semangka", "Melon", "Pepaya"];
+        
+        // Array 1 Dimensi - Angka
+        const numbers = [10, 25, 37, 42, 58, 63, 79, 84, 96];
+        
+        // Array 2 Dimensi (3x4) - Matriks
+        const matrix = [
+            [1, 2, 3, 4],      // Baris 0
+            [5, 6, 7, 8],      // Baris 1
+            [9, 10, 11, 12]    // Baris 2
+        ];
+
+        // Array 2 Dimensi (4x3) - Matriks kedua
+        const matrix2 = [
+            [15, 20, 25],      // Baris 0
+            [30, 35, 40],      // Baris 1
+            [45, 50, 55],      // Baris 2
+            [60, 65, 70]       // Baris 3
+        ];
+
+        // Data nama siswa per kelas (array 2D)
+        const siswaKelas = [
+            ["Budi", "Ani", "Citra", "Dewi"],           // Kelas A (baris 0) - 4 siswa
+            ["Eka", "Fani", "Gita", "Hadi", "Indah"],   // Kelas B (baris 1) - 5 siswa
+            ["Joko", "Kiki", "Lina"]                    // Kelas C (baris 2) - 3 siswa
+        ];
+
+        // ============ SOAL KUIS ============
+        // 7 Soal untuk Array 1 Dimensi
+        const soal1D = [
+            {
+                question: "Bagaimana cara mengakses elemen 'Jeruk' dari array <code>fruits</code>?",
+                options: ["fruits[2]", "fruits[3]", "fruits[1]", "fruits[0]"],
+                correct: 0,
+                explanation: "Jeruk berada di indeks ke-2 karena urutan: Apel(0), Pisang(1), Jeruk(2)"
+            },
+            {
+                question: "Akses elemen terakhir dari array <code>fruits</code> (Pepaya)!",
+                options: ["fruits[7]", "fruits[8]", "fruits[6]", "fruits[length]"],
+                correct: 0,
+                explanation: "Panjang array fruits adalah 8, indeks terakhir adalah 7 (karena mulai dari 0)"
+            },
+            {
+                question: "Apa hasil dari <code>fruits[4]</code>?",
+                options: ["Mangga", "Anggur", "Semangka", "Melon"],
+                correct: 1,
+                explanation: "fruits[0]:Apel, [1]:Pisang, [2]:Jeruk, [3]:Mangga, [4]:Anggur, [5]:Semangka, [6]:Melon, [7]:Pepaya"
+            },
+            {
+                question: "Cara mengakses elemen pertama array <code>fruits</code>?",
+                options: ["fruits[0]", "fruits[1]", "fruits[first]", "fruits[length]"],
+                correct: 0,
+                explanation: "Indeks pertama selalu 0, bukan 1"
+            },
+            {
+                question: "Berapakah nilai dari <code>numbers[3]</code>?",
+                options: ["37", "42", "58", "25"],
+                correct: 1,
+                explanation: "numbers = [10(0), 25(1), 37(2), 42(3), 58(4), 63(5), 79(6), 84(7), 96(8)] → indeks 3 adalah 42"
+            },
+            {
+                question: "Untuk mengakses angka 79 dari array <code>numbers</code>, perintah yang tepat?",
+                options: ["numbers[6]", "numbers[7]", "numbers[5]", "numbers[8]"],
+                correct: 0,
+                explanation: "79 berada di indeks 6: [0:10,1:25,2:37,3:42,4:58,5:63,6:79,7:84,8:96]"
+            },
+            {
+                question: "Apa output dari <code>numbers[numbers.length - 1]</code>?",
+                options: ["96", "84", "79", "Error"],
+                correct: 0,
+                explanation: "numbers.length = 9, maka indeks 8 adalah 96 (elemen terakhir)"
+            }
+        ];
+
+        // 8 Soal untuk Array 2 Dimensi
+        const soal2D = [
+            {
+                question: "Perhatikan matriks pertama! Angka <strong>7</strong> berada di posisi baris dan kolom berapa? (format: [baris][kolom])",
+                options: ["[1][2]", "[2][1]", "[1][3]", "[2][3]"],
+                correct: 0,
+                explanation: "Matrix 3x4: baris0:[1,2,3,4], baris1:[5,6,7,8], baris2:[9,10,11,12] → 7 ada di [1][2]"
+            },
+            {
+                question: "Perhatikan data siswa! Siswa 'Fani' berada di kelas dan urutan ke berapa? (format: [baris][kolom])",
+                options: ["[1][2]", "[2][1]", "[1][3]", "[2][2]"],
+                correct: 0,
+                explanation: "Kelas A(baris0): Budi(0),Ani(1),Citra(2),Dewi(3) | Kelas B(baris1): Eka(0),Fani(1),Gita(2),Hadi(3),Indah(4) → Fani di [1][1]? Periksa: Fani sebenarnya di indeks 1? Tunggu, Eka(0), Fani(1) → Ya [1][1]! Tapi soal mengatakan Fani? Cek lagi: Fani di indeks 2? Eka(0), Fani(1), Gita(2) → Jadi [1][1]"
+                // Note: Fani adalah indeks 1 di baris 1, tapi opsi [1][2] berarti indeks 2. Karena tidak ada opsi [1][1], kita perlu sesuaikan.
+                // Mari kita perbaiki: Fani adalah indeks 1, karena tidak ada opsi [1][1], kita buat soal yang sesuai.
+            },
+            {
+                question: "Nilai berapakah yang berada di posisi <code>matrix[0][3]</code>?",
+                options: ["1", "4", "3", "2"],
+                correct: 1,
+                explanation: "matrix[0][3] = baris 0, kolom 3. Baris 0: [1,2,3,4] → kolom ke-3 (indeks3) adalah 4"
+            },
+            {
+                question: "Siswa 'Hadi' dapat diakses dengan perintah?",
+                options: ["siswaKelas[1][3]", "siswaKelas[2][1]", "siswaKelas[1][2]", "siswaKelas[2][3]"],
+                correct: 0,
+                explanation: "Kelas B (baris1): [Eka(0), Fani(1), Gita(2), Hadi(3), Indah(4)] → aksesnya [1][3]"
+            },
+            {
+                question: "Berapa hasil dari <code>matrix[2][1]</code>?",
+                options: ["11", "10", "9", "12"],
+                correct: 1,
+                explanation: "matrix[2][1] = baris 2, kolom 1. Baris 2: [9,10,11,12] → kolom ke-1 (indeks1) adalah 10"
+            },
+            {
+                question: "Perhatikan matriks kedua (4x3)! Angka <strong>55</strong> berada di posisi mana?",
+                options: ["[2][2]", "[2][1]", "[3][2]", "[1][2]"],
+                correct: 0,
+                explanation: "Matrix2: baris0:[15,20,25], baris1:[30,35,40], baris2:[45,50,55], baris3:[60,65,70] → 55 ada di [2][2]"
+            },
+            {
+                question: "Apa hasil dari <code>matrix2[3][1]</code>?",
+                options: ["60", "65", "70", "55"],
+                correct: 1,
+                explanation: "matrix2[3][1] = baris 3, kolom 1. Baris 3: [60,65,70] → kolom 1 adalah 65"
+            },
+            {
+                question: "Siswa 'Dewi' berada di kelas dan urutan ke berapa? (format: [baris][kolom])",
+                options: ["[0][3]", "[0][2]", "[1][0]", "[2][1]"],
+                correct: 0,
+                explanation: "Kelas A (baris0): Budi(0), Ani(1), Citra(2), Dewi(3) → Dewi di [0][3]"
+            },
+            {
+                question: "Berapa panjang baris ke-1 (indeks 1) pada array <code>siswaKelas</code>? (Hitung jumlah siswanya!)",
+                options: ["4", "5", "3", "6"],
+                correct: 1,
+                explanation: "siswaKelas[1] = ['Eka','Fani','Gita','Hadi','Indah'] → panjangnya 5 siswa"
+            }
+        ];
+
+        // Perbaiki soal nomor 2 (Fani) dengan opsi yang benar
+        soal2D[1] = {
+            question: "Perhatikan data siswa! Siswa 'Fani' berada di kelas dan urutan ke berapa? (format: [baris][kolom])",
+            options: ["[1][1]", "[2][1]", "[1][2]", "[2][2]"],
+            correct: 0,
+            explanation: "Kelas A(baris0): Budi(0),Ani(1),Citra(2),Dewi(3) | Kelas B(baris1): Eka(0),Fani(1),Gita(2),Hadi(3),Indah(4) → Fani di [1][1]"
+        };
+
+        // ============ VARIABEL GLOBAL ============
+        let answers1D = soal1D.map(() => ({ selectedAnswer: null, isSubmitted: false, isCorrect: false }));
+        let answers2D = soal2D.map(() => ({ selectedAnswer: null, isSubmitted: false, isCorrect: false }));
+        
+        // ============ RENDER ARRAY ============
+        function renderArray1D() {
+            const container = document.getElementById('array1DDisplay');
+            container.innerHTML = `
+                <div style="margin-bottom:10px; font-weight:bold; color:#667eea;">🍎 Array Buah (fruits):</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:20px;">
+                    ${fruits.map((item, index) => `
+                        <div class="array-item">
+                            <div>${item}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="margin-top:10px; font-weight:bold; color:#667eea;">🔢 Array Angka (numbers):</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
+                    ${numbers.map((item) => `
+                        <div class="array-item" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            <div>${item}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderArray2D() {
+            const container = document.getElementById('array2DDisplay');
+            
+            // Render matrix pertama tanpa label indeks
+            const matrixHTML = `
+                <div class="array-2d">
+                    <div style="margin-bottom:10px; font-weight:bold; color:#764ba2;">📊 Matriks 3x4 (matrix):</div>
+                    ${matrix.map((row) => `
+                        <div class="array-row">
+                            ${row.map((cell) => `
+                                <div class="array-cell">
+                                    ${cell}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Render matrix kedua
+            const matrix2HTML = `
+                <div class="array-2d" style="margin-top:20px;">
+                    <div style="margin-bottom:10px; font-weight:bold; color:#764ba2;">📊 Matriks 4x3 (matrix2):</div>
+                    ${matrix2.map((row) => `
+                        <div class="array-row">
+                            ${row.map((cell) => `
+                                <div class="array-cell">
+                                    ${cell}
+                                </div>
+                            `).join('')}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // Render data siswa tanpa label indeks
+            const kelasNames = ["Kelas A (RPL 1)", "Kelas B (RPL 2)", "Kelas C (RPL 3)"];
+            const siswaHTML = `
+                <div class="student-data" style="margin-top:20px;">
+                    <div style="margin-bottom:10px; font-weight:bold; color:#764ba2;">🏫 Data Siswa per Kelas:</div>
+                    ${siswaKelas.map((kelas, i) => `
+                        <div class="kelas-item">
+                            <div class="kelas-label">${kelasNames[i]}</div>
+                            <div class="student-list">
+                                ${kelas.map(siswa => `
+                                    <div class="student-name">${siswa}</div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="index-info" style="margin-top:15px;">
+                        💡 <strong>Urutan siswa:</strong> Dari kiri ke kanan adalah indeks 0,1,2,...
+                    </div>
+                </div>
+            `;
+            
+            container.innerHTML = matrixHTML + matrix2HTML + siswaHTML;
+        }
+
+        // ============ RENDER SOAL 1D ============
+        function renderSoal1D() {
+            const container = document.getElementById('quiz1D');
+            container.innerHTML = soal1D.map((soal, idx) => {
+                const answerData = answers1D[idx];
+                const isSubmitted = answerData.isSubmitted;
+                const selectedOpt = answerData.selectedAnswer;
+                
+                return `
+                    <div class="card" style="margin-bottom:20px; padding:15px">
+                        <div class="status-badge ${isSubmitted ? 'status-answered' : 'status-unanswered'}">
+                            ${isSubmitted ? (answerData.isCorrect ? '✓ Sudah dijawab (Benar)' : '✗ Sudah dijawab (Salah)') : '⏳ Belum dijawab'}
+                        </div>
+                        <div class="question-box">
+                            <div class="question-text">Soal ${idx + 1}: ${soal.question}</div>
+                        </div>
+                        <div class="options">
+                            ${soal.options.map((opt, optIdx) => `
+                                <div class="option ${selectedOpt === optIdx ? 'selected' : ''} ${isSubmitted ? 'disabled' : ''}" 
+                                     onclick="${!isSubmitted ? `pilihJawaban1D(${idx}, ${optIdx})` : ''}">
+                                    <input type="radio" name="q1_${idx}" 
+                                           ${selectedOpt === optIdx ? 'checked' : ''}
+                                           ${isSubmitted ? 'disabled' : ''}>
+                                    <label>${String.fromCharCode(65+optIdx)}. ${opt}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-top:15px">
+                            <button class="submit-btn" 
+                                    onclick="submitJawaban1D(${idx})"
+                                    ${isSubmitted ? 'disabled' : ''}>
+                                ${isSubmitted ? '✓ Jawaban Tersubmit' : '📤 Submit Jawaban'}
+                            </button>
+                        </div>
+                        ${isSubmitted ? `
+                            <div class="feedback ${answerData.isCorrect ? 'success' : 'error'}">
+                                ${answerData.isCorrect ? 
+                                    '✅ <strong>Benar!</strong> ' + soal.explanation : 
+                                    '❌ <strong>Salah.</strong> ' + soal.explanation}
+                                <br><small>Jawaban yang benar: <strong>${String.fromCharCode(65+soal.correct)}. ${soal.options[soal.correct]}</strong></small>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============ RENDER SOAL 2D ============
+        function renderSoal2D() {
+            const container = document.getElementById('quiz2D');
+            container.innerHTML = soal2D.map((soal, idx) => {
+                const answerData = answers2D[idx];
+                const isSubmitted = answerData.isSubmitted;
+                const selectedOpt = answerData.selectedAnswer;
+                
+                return `
+                    <div class="card" style="margin-bottom:20px; padding:15px">
+                        <div class="status-badge ${isSubmitted ? 'status-answered' : 'status-unanswered'}">
+                            ${isSubmitted ? (answerData.isCorrect ? '✓ Sudah dijawab (Benar)' : '✗ Sudah dijawab (Salah)') : '⏳ Belum dijawab'}
+                        </div>
+                        <div class="question-box">
+                            <div class="question-text">Soal ${idx + 1}: ${soal.question}</div>
+                        </div>
+                        <div class="options">
+                            ${soal.options.map((opt, optIdx) => `
+                                <div class="option ${selectedOpt === optIdx ? 'selected' : ''} ${isSubmitted ? 'disabled' : ''}" 
+                                     onclick="${!isSubmitted ? `pilihJawaban2D(${idx}, ${optIdx})` : ''}">
+                                    <input type="radio" name="q2_${idx}" 
+                                           ${selectedOpt === optIdx ? 'checked' : ''}
+                                           ${isSubmitted ? 'disabled' : ''}>
+                                    <label>${String.fromCharCode(65+optIdx)}. ${opt}</label>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-top:15px">
+                            <button class="submit-btn" 
+                                    onclick="submitJawaban2D(${idx})"
+                                    ${isSubmitted ? 'disabled' : ''}>
+                                ${isSubmitted ? '✓ Jawaban Tersubmit' : '📤 Submit Jawaban'}
+                            </button>
+                        </div>
+                        ${isSubmitted ? `
+                            <div class="feedback ${answerData.isCorrect ? 'success' : 'error'}">
+                                ${answerData.isCorrect ? 
+                                    '✅ <strong>Benar!</strong> ' + soal.explanation : 
+                                    '❌ <strong>Salah.</strong> ' + soal.explanation}
+                                <br><small>Jawaban yang benar: <strong>${String.fromCharCode(65+soal.correct)}. ${soal.options[soal.correct]}</strong></small>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ============ FUNGSI MEMILIH JAWABAN ============
+        function pilihJawaban1D(soalIndex, optionIndex) {
+            if (answers1D[soalIndex].isSubmitted) return;
+            answers1D[soalIndex].selectedAnswer = optionIndex;
+            renderSoal1D();
+            renderSoal2D();
+        }
+
+        function pilihJawaban2D(soalIndex, optionIndex) {
+            if (answers2D[soalIndex].isSubmitted) return;
+            answers2D[soalIndex].selectedAnswer = optionIndex;
+            renderSoal1D();
+            renderSoal2D();
+        }
+
+        // ============ FUNGSI SUBMIT JAWABAN ============
+        function submitJawaban1D(soalIndex) {
+            const answerData = answers1D[soalIndex];
+            
+            if (answerData.selectedAnswer === null) {
+                alert('⚠️ Silakan pilih jawaban terlebih dahulu sebelum submit!');
+                return;
+            }
+            
+            if (answerData.isSubmitted) return;
+            
+            answerData.isSubmitted = true;
+            answerData.isCorrect = (answerData.selectedAnswer === soal1D[soalIndex].correct);
+            
+            updateScore();
+            renderSoal1D();
+            renderSoal2D();
+        }
+
+        function submitJawaban2D(soalIndex) {
+            const answerData = answers2D[soalIndex];
+            
+            if (answerData.selectedAnswer === null) {
+                alert('⚠️ Silakan pilih jawaban terlebih dahulu sebelum submit!');
+                return;
+            }
+            
+            if (answerData.isSubmitted) return;
+            
+            answerData.isSubmitted = true;
+            answerData.isCorrect = (answerData.selectedAnswer === soal2D[soalIndex].correct);
+            
+            updateScore();
+            renderSoal1D();
+            renderSoal2D();
+        }
+
+        // ============ UPDATE SKOR ============
+        function updateScore() {
+            let benar = 0;
+            let salah = 0;
+            let belum = 0;
+            
+            answers1D.forEach(answer => {
+                if (!answer.isSubmitted) {
+                    belum++;
+                } else if (answer.isCorrect) {
+                    benar++;
+                } else {
+                    salah++;
+                }
+            });
+            
+            answers2D.forEach(answer => {
+                if (!answer.isSubmitted) {
+                    belum++;
+                } else if (answer.isCorrect) {
+                    benar++;
+                } else {
+                    salah++;
+                }
+            });
+            
+            document.getElementById('correctCount').innerText = benar;
+            document.getElementById('wrongCount').innerText = salah;
+            document.getElementById('unansweredCount').innerText = belum;
+            document.getElementById('totalCount').innerText = benar + salah + belum;
+        }
+
+        // ============ RESET KUIS ============
+        function resetQuiz() {
+            if (confirm('Reset semua jawaban? Semua progres akan hilang.')) {
+                answers1D = soal1D.map(() => ({ selectedAnswer: null, isSubmitted: false, isCorrect: false }));
+                answers2D = soal2D.map(() => ({ selectedAnswer: null, isSubmitted: false, isCorrect: false }));
+                updateScore();
+                renderSoal1D();
+                renderSoal2D();
+            }
+        }
+
+        // ============ INITIALISASI ============
+        function init() {
+            renderArray1D();
+            renderArray2D();
+            renderSoal1D();
+            renderSoal2D();
+            updateScore();
+        }
+
+        init();
+    </script>
+</body>
 </html>
